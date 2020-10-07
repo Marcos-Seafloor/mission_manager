@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from builtins import str
+from builtins import object
 import rospy
 import smach
 import smach_ros
@@ -32,7 +35,7 @@ from tf.transformations import quaternion_from_euler
 import json
 import math
 
-class MissionManagerCore:
+class MissionManagerCore(object):
     def __init__(self):
         self.piloting_mode = 'standby'
         self.position = None
@@ -139,7 +142,7 @@ class MissionManagerCore:
 
     def addTask(self, args, prepend=False):
         parts = args.split(None,1)
-        print parts
+        print(parts)
         if len(parts) == 2:
             task_type = parts[0]
             task = None
@@ -158,8 +161,8 @@ class MissionManagerCore:
                     self.tasks.insert(0,task)
                 else:
                     self.tasks.append(task)
-        print 'tasks'
-        print self.tasks
+        print('tasks')
+        print(self.tasks)
 
     def setOverride(self, task):
         self.override_task = task
@@ -185,7 +188,7 @@ class MissionManagerCore:
         plan = json.loads(mp)
         
         for item in plan:
-            print item
+            print(item)
             if item['type'] == 'Platform':
                 ret['default_speed'] = item['speed']*0.514444  # knots to m/s
             if item['type'] == 'SurveyPattern':
@@ -274,7 +277,7 @@ class MissionManagerCore:
 
     def nextTask(self):
         if self.pending_command is not None:
-            print 'nextTask: pending_command:',self.pending_command
+            print('nextTask: pending_command:',self.pending_command)
         if self.pending_command == 'do_override':
             if self.current_task is not None and self.current_task['type'] == 'mission_plan':
                 self.current_task['current_path'] = None
@@ -306,7 +309,7 @@ class MissionManagerCore:
                 else:
                     try:
                         i = self.tasks.index(self.current_task)
-                        print 'nextTask: current task index:',i
+                        print('nextTask: current task index:',i)
                         if self.pending_command == 'next_task':
                             i += 1
                             if i >= len(self.tasks):
@@ -320,7 +323,7 @@ class MissionManagerCore:
                             else:
                                 self.current_task = self.tasks[i]
                     except ValueError:
-                        print "nextTask: can't find current task index!"
+                        print("nextTask: can't find current task index!")
                         self.current_task = None
                     if self.current_task is None: #end of the list or error figuring out where in the list we were.
                         if self.done_behavior == 'restart':
@@ -495,7 +498,7 @@ class MissionPlan(MMState):
 
     def generatePaths(self, task):
         path = []
-        print task['nav_objectives']
+        print(task['nav_objectives'])
         for p in task['nav_objectives'][task['current_nav_objective_index']]['waypoints']:
             #path.append((p['position']['latitude'],p['position']['longitude']))
             gp = GeoPose();
@@ -601,7 +604,7 @@ class SurveyArea(MMState):
         if task is not None:
             goal = manda_coverage.msg.manda_coverageGoal()
             for wp in task['nav_objectives'][task['current_nav_objective_index']]['children']:
-                print wp
+                print(wp)
                 gp = GeoPoint()
                 gp.latitude = wp['latitude']
                 gp.longitude = wp['longitude']
