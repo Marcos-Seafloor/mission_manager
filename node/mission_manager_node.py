@@ -377,6 +377,10 @@ class MissionManagerCore:
                 hb.values.append(KeyValue('current_task_label',self.current_task['label']))
                 hb.values.append(KeyValue('current_task_nav_objective_count',str(len(self.current_task['nav_objectives']))))
                 hb.values.append(KeyValue('current_task_nav_objective_index',str(self.current_task['current_nav_objective_index'])))
+                
+        for v in hb.values:
+            v.key = v.key.encode('ascii')
+            v.value = v.value.encode('ascii')
         self.status_publisher.publish(hb)
                
 class MMState(smach.State):
