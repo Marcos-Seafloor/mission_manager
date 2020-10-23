@@ -337,7 +337,7 @@ class MissionManagerCore(object):
                     self.current_task['current_path'] = None
 
                     
-        if self.current_task is not None and self.current_task['type'] == 'mission_plan' and (self.pending_command.startswith('goto_line') or self.pending_command.startswith('start_line')):
+        if self.current_task is not None and self.current_task['type'] == 'mission_plan' and (self.pending_command is not None and ( self.pending_command.startswith('goto_line') or self.pending_command.startswith('start_line'))):
             parts = self.pending_command.strip().split(None,1)
             if len(parts) == 2:
                 cmd = parts[0]
