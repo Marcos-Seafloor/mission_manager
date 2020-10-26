@@ -56,6 +56,8 @@ class MissionManagerCore(object):
         rospy.Subscriber('/heading', NavEulerStamped, self.headingCallback, queue_size = 1)
         rospy.Subscriber('/cmg', CourseMadeGoodStamped, self.cmgCallback, queue_size = 1)
         rospy.Subscriber('/project11/mission_manager/command', String, self.commandCallback, queue_size = 1)
+        rospy.Subscriber('/heartbeat', Heartbeat, self.heartbeatCallback, queue_size = 1)
+
         
         self.status_publisher = rospy.Publisher('/project11/mission_manager/status', Heartbeat, queue_size = 10)
 
@@ -64,6 +66,11 @@ class MissionManagerCore(object):
     def pilotingModeCallback(self, msg):
         self.piloting_mode = msg.data
 
+    def heartbeatCallback(self, msg):
+        for kv in msg.values:
+            if kv.key == 'piloting_mode':
+                self.piloting_mode = kv.value
+            
     def positionCallback(self, msg):
         self.position = msg
         
