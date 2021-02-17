@@ -51,15 +51,15 @@ class MissionManagerCore(object):
         
         self.done_behavior = 'hover'
         
-        rospy.Subscriber('/project11/piloting_mode', String, self.pilotingModeCallback, queue_size = 1)
-        rospy.Subscriber('/position', GeoPointStamped, self.positionCallback, queue_size = 1)
-        rospy.Subscriber('/heading', NavEulerStamped, self.headingCallback, queue_size = 1)
-        rospy.Subscriber('/cmg', CourseMadeGoodStamped, self.cmgCallback, queue_size = 1)
-        rospy.Subscriber('/project11/mission_manager/command', String, self.commandCallback, queue_size = 1)
-        rospy.Subscriber('/heartbeat', Heartbeat, self.heartbeatCallback, queue_size = 1)
+        rospy.Subscriber('project11/piloting_mode', String, self.pilotingModeCallback, queue_size = 1)
+        rospy.Subscriber('position', GeoPointStamped, self.positionCallback, queue_size = 1)
+        rospy.Subscriber('heading', NavEulerStamped, self.headingCallback, queue_size = 1)
+        rospy.Subscriber('cmg', CourseMadeGoodStamped, self.cmgCallback, queue_size = 1)
+        rospy.Subscriber('project11/mission_manager/command', String, self.commandCallback, queue_size = 1)
+        rospy.Subscriber('project11/heartbeat', Heartbeat, self.heartbeatCallback, queue_size = 1)
 
         
-        self.status_publisher = rospy.Publisher('/project11/mission_manager/status', Heartbeat, queue_size = 10)
+        self.status_publisher = rospy.Publisher('project11/mission_manager/status', Heartbeat, queue_size = 10)
 
         self.config_server = Server(mission_managerConfig, self.reconfigure_callback)
 
